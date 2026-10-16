@@ -1,15 +1,15 @@
 
-import { readFile } from "node:fs";
-
-readFile("./employees.json", "utf8", (err, data) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-
-  const employees = JSON.parse(data);
-
-  employees.sort((a, b) => a.age - b.age);
-
-  console.log(employees);
-});
+fetch("./employees.json")
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch employees");
+    }
+    return response.json();
+  })
+  .then(employees => {
+    employees.sort((a, b) => a.age - b.age);
+    console.log(employees);
+  })
+  .catch(error => {
+    console.error("Error fetching employees:", error);
+  });
